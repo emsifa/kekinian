@@ -26,6 +26,11 @@ class Route
         return $this->path;
     }
 
+    public function setPath(string $path)
+    {
+        $this->path = $path;
+    }
+
     public function getName()
     {
         return "{$this->method}:{$this->path}";
