@@ -1,0 +1,20 @@
+{
+    "name": "emsifa/kekinian",
+    "description": "Framework PHP kekinian",
+    "authors": [
+        {
+            "name": "Muhammad Syifa",
+            "email": "emsifa@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Emsifa\\Kekinian\\": "src/"
+        }
+    },
+    "require": {
+        "symfony/http-foundation": "^5.3",
+        "symfony/routing": "^5.3"
+    }
+}
