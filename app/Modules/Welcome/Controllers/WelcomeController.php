@@ -2,39 +2,41 @@
 
 namespace App\Modules\Welcome\Controllers;
 
+use Emsifa\Kekinian\Controller;
 use Emsifa\Kekinian\Route\Delete;
 use Emsifa\Kekinian\Route\Get;
 use Emsifa\Kekinian\Route\Patch;
 use Emsifa\Kekinian\Route\Post;
 use Emsifa\Kekinian\Route\Put;
 
+#[Controller("/welcome")]
 class WelcomeController
 {
-    #[Get("/welcome")]
+    #[Get]
     public function welcome()
     {
         echo "Welcome with GET method";
     }
 
-    #[Post("/welcome")]
+    #[Post]
     public function postSomething()
     {
         echo "Welcome with POST method";
     }
 
-    #[Put("/welcome")]
+    #[Put]
     public function putSomething()
     {
         echo "Welcome with PUT method";
     }
 
-    #[Patch("/welcome")]
+    #[Patch]
     public function patchSomething()
     {
         echo "Welcome with PATCH method";
     }
 
-    #[Delete("/welcome")]
+    #[Delete]
     public function deleteSomething()
     {
         echo "Welcome with DELETE method";

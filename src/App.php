@@ -2,6 +2,8 @@
 
 namespace Emsifa\Kekinian;
 
+use Emsifa\Kekinian\Helpers\ReflectionHelper;
+use Emsifa\Kekinian\Interfaces\RouteModifier;
 use Emsifa\Kekinian\Route\Route;
 use Exception;
 use ReflectionAttribute;
@@ -91,21 +93,37 @@ class App
         $routes = [];
 
         $reflection = new ReflectionClass($controller);
+        $routeModifiers = ReflectionHelper::getAttributeInstances(
+            $reflection,
+            RouteModifier::class,
+            ReflectionAttribute::IS_INSTANCEOF,
+        );
+
         $methods = $reflection->getMethods();
         foreach ($methods as $method) {
             $attributes = $method->getAttributes(Route::class, ReflectionAttribute::IS_INSTANCEOF);
             if (count($attributes) > 0) {
-                $attr = $attributes[0]->newInstance();
+                $route = $attributes[0]->newInstance();
+                $route = $this->applyModifiers($route, $routeModifiers);
+
                 $routes[] = [
                     'handler' => [$controller, $method->getName()],
-                    'method' => $attr->getMethod(),
-                    'path' => $attr->getPath(),
-                    'name' => $attr->getName(),
+                    'method' => $route->getMethod(),
+                    'path' => $route->getPath(),
+                    'name' => $route->getName(),
                 ];
             }
         }
 
         return $routes;
+    }
+
+    public function applyModifiers(Route $route, array $modifiers): Route
+    {
+        foreach ($modifiers as $modifier) {
+            $route = $modifier->modifyRoute($route);
+        }
+        return $route;
     }
 
     public function dispatch(array $result)
